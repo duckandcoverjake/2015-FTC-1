@@ -27,10 +27,11 @@
 #define START_BLUE    "Blue"
 #define START_FLOOR  "FLOOR"
 #define START_RAMP "RAMP"
-#define TRUE 1
-#define FALSE 0
+//#define TRUE 1
+//#define FALSE 0
 string startColor;
 string startPosition;
+bool start_location
 int GoalPosition =0;//must be initialized as zero so it can overide when/if LocateInfaRedBeacon() produces no change
 
 task printf();
@@ -193,20 +194,20 @@ void initializeRobot()
 void getUserInput()
 {
   disableDiagnosticsDisplay();
-  nxtDisplayCenteredTextLine(0, "Red or Blue?");
-  nxtDisplayCenteredTextLine(7, "Red Blue");
+  nxtDisplayCenteredTextLine(0, "Floor or Ramp?");
+  nxtDisplayCenteredTextLine(7, "Floor Ramp");
   while(true)
   {
     if(nNxtButtonPressed == 2)
     {
       startColor = START_RED;
-      nxtDisplayCenteredTextLine(0, "Red");
+      nxtDisplayCenteredTextLine(0, "Floor");
       break;
     }
     else if(nNxtButtonPressed == 1)
     {
       startColor = START_BLUE;
-      nxtDisplayCenteredTextLine(0, "Blue");
+      nxtDisplayCenteredTextLine(0, "Ramp");
       break;
     }
   }
@@ -218,39 +219,39 @@ void getUserInput()
   {
     if(nNxtButtonPressed == 2)
     {
-      startPosition = START_FLOOR;
+      start_location = true;
       nxtDisplayCenteredTextLine(1, "FLOOR");
       nxtDisplayCenteredTextLine(7, "");
       break;
     }
     else if(nNxtButtonPressed == 1)
     {
-      startPosition = START_RAMP;
+      start_location = false;
       nxtDisplayCenteredTextLine(1, "RAMP");
       nxtDisplayCenteredTextLine(7, "");
       break;
     }
   }
-  playSound(soundFastUpwardTones);
-  wait10Msec(200);
-  bDisplayDiagnostics = false;
-	nxtDisplayCenteredTextLine(0, "%s, %s",startColor, startPosition);
+ // playSound(soundFastUpwardTones);
+ // wait10Msec(200);
+ // bDisplayDiagnostics = false;
+	//nxtDisplayCenteredTextLine(0, "%s, %s",startColor, startPosition);
 }
 
 void Routine1()
 {
-//Turn(-90);
-////Drive(1.5);
-////Drive(-1.5);
-//RunLift(4);
-//BumpConveyor();
-////Drive(1.5);
-//RunLift(-4);
-////Drive(-1.5);
-//Turn(90);
-////Drive(12);
-//Turn(90);
-//Drive(36);
+	Drive(-108, 30);
+	wait10Msec(150);
+	servo[Gripper]=0;
+	wait10Msec(100);
+	servo[lock]=225;
+	wait10Msec(200);
+	servo[lock]=127;
+	wait10Msec(.75)
+	Turn(30);
+	wait10Msec(50);
+	Drive(101, 50);
+	Turn(-90);
 }
 void Routine2()
 {
