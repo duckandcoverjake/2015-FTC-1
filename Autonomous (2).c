@@ -24,7 +24,7 @@
 
 #include "drivers/HTSPB-driver.h"
 #include "drivers/PID.h"
-#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+//#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #define START_RED     "Red"
 #define START_BLUE    "Blue"
 #define START_FLOOR  "FLOOR"
@@ -55,7 +55,7 @@ task main()
 //	startTask(printf);
 	getUserInput();
 	initializeRobot();
-	//waitForStart();
+
 	if(startPosition == START_RAMP)
 	{
   Drive(-108, 50);
@@ -75,21 +75,21 @@ task main()
 	}
 	if(startPosition==START_FLOOR)
 	{
-		Drive(-38, 50);
+	//	Drive(-36, 50);
 		Turn(-90);
-		Drive(-22, 50);
-		Turn(90);
-		Drive(-74, 50);
-		wait10Msec(150);
-		servo[Gripper]=0;
-		wait10Msec(100);
-		servo[lock]=225;
-		wait10Msec(200);
-		servo[lock]=127;
-		wait10Msec(.75);
-		Drive(108, 50);
-		Turn(90);
-		BumpConveyor();
+		//Drive(-32, 50);
+		//Turn(45);
+		//Drive(-54, 50);
+		//wait10Msec(150);
+		//servo[Gripper]=0;
+		//wait10Msec(100);
+		//servo[lock]=225;
+		//wait10Msec(200);
+		//servo[lock]=127;
+		//wait10Msec(.75);
+		//Drive(108, 50);
+		//Turn(90);
+		//BumpConveyor();
 	}
 	//waitForStart();
 	//locateInfaRedBeacon();//determins GoalPosition
@@ -423,34 +423,41 @@ void Turn(int Angle)//clockwise is negitive
   nMotorEncoder[motorE]=0;
   nMotorEncoder[motorD]=0;
 	float WheelbaseRadius = 7.3875;
-	float ArcLength=degreesToRadians(Angle)*WheelbaseRadius;//result
 
-	int Target= round(ArcLength*enc_in);//goal
 
-	writeDebugStreamLine("Target:%i",Target);
+
+//	writeDebugStreamLine("Target:%i",Target);
 
   //1/2 rot= 45deg = 1120enc
-	if(Angle<1)
+	if(Angle<0)//negitive angle
 	{
-	//left
+		float ArcLength=degreesToRadians(abs(Angle))*WheelbaseRadius;//result
+		int Target= -1*round(ArcLength*enc_in);//goal
+		writeDebugStreamLine("Target:%i",Target);
+		//left
 		while(nMotorEncoder[motorE]>= Target)
 		{
-	writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[motorE], Target);
-		motor[Right]=100;
-		motor[Left]=-100;
+			writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[motorE], Target);
+			motor[Right]=100;
+			motor[Left]=-100;
 		}
+		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[motorE], Target);
 		motor[Right]=0;
 		motor[Left]=0;
 	}
-	else if(Angle>1)
+	else if(Angle>0)
 	{
+		float ArcLength=degreesToRadians(abs(Angle))*WheelbaseRadius;//result
+		int Target= round(ArcLength*enc_in);//goal
+		writeDebugStreamLine("Target:%i",Target);
 	//right
 		while(nMotorEncoder[motorE]<= Target)
 		{
-writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[motorE], Target);
+		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[motorE], Target);
 		motor[Right]=-100;
 		motor[Left]=100;
 		}
+		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[motorE], Target);
 		motor[Right]=0;
 		motor[Left]=0;
 	}
