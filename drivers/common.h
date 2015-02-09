@@ -119,7 +119,7 @@
 /**
  * Returns a rounded int from a float.
  */
-#define round(x) (int)(x + 0.5)
+#define round(x) (int)(x + 0.5
 
 
 /**

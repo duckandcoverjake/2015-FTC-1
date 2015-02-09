@@ -10,8 +10,8 @@ Sue shields-- helping me find the "dependant" form of I, this greatly simplified
 
 //Define parameter
 #define Kp 0.1//tuning for p
-#define Ki 0.0//tuning for i
-#define Kd 0.1//tuning for d
+#define Ki 0.1//tuning for i
+#define Kd 0.2//tuning for d
 #define Tolerance 5//how close is close enough?
 #define dt 0.001 //duration of loop
 #define max_out 100 //ouput limits
