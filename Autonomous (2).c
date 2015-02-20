@@ -22,15 +22,16 @@
 
 #pragma DebuggerWindows("debugStream")
 #pragma DebuggerWindows("nxtLCDscreen")
-#
+
 #include "drivers/HTSPB-driver.h"
 #include "drivers/PID.h"
-//#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #define START_RED     "Red"
 #define START_BLUE    "Blue"
 #define START_FLOOR  "FLOOR"
 #define START_RAMP "RAMP"
-
+#define MIN (X, Y) (((X)<(Y) ?(X) : (Y)
+#define MAX (A, B) (((A)>(B) ?(X) : (Y)
 string startColor;
 string startPosition;
 int hasbeeninit = 0;
@@ -59,19 +60,21 @@ task main()
 
 	if(startPosition == START_RAMP)
 	{
-  Drive(-108, 50);
+  Drive(-105, 40);
 	wait10Msec(150);
 	servo[Gripper]=0;
 	wait10Msec(100);
 	servo[lock]=225;
 	wait10Msec(200);
 	servo[lock]=127;
-	wait10Msec(.75);
-	Turn(30);
+	wait10Msec(200);
+	Turn(32);
 	wait10Msec(50);
-	Drive(101, 50);
-	Turn(90);
+	Drive(101, 85);
+	wait10Msec(50);
+	Turn(-90);
 	Runlift(1);
+	wait10Msec(50);
 	BumpConveyor();
 	}
 	if(startPosition==START_FLOOR)
@@ -229,7 +232,7 @@ void initializeRobot()
 }
 void getUserInput()
 {
-  bDisplayDiagnostics = false;
+ disableDiagnosticsDisplay();
   nxtDisplayCenteredTextLine(1, "FLOOR or RAMP?");
   nxtDisplayCenteredTextLine(7, "FLOOR RAMP");
   while(true)
@@ -431,7 +434,7 @@ void Turn(int Angle)//clockwise is negitive
 	int enc_in=ppr/circumfrence;//result
   nMotorEncoder[motorE]=0;
   nMotorEncoder[motorD]=0;
-	float WheelbaseRadius = 6.6;
+	float WheelbaseRadius = 7.0;
 
 
 
@@ -482,6 +485,8 @@ motor[Conveyor]=0;
 
 void Test()
 {
-  float nFeedBack=((23000/1120.0)/22.5)*100;
-  writeDebugStreamLine("Status:%f",nFeedBack);
+  //float nFeedBack=((23000/1120.0)/22.5)*100;
+  //writeDebugStreamLine("Status:%f",nFeedBack);
+
+
 }
