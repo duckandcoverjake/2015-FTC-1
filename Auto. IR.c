@@ -25,7 +25,7 @@
 
 #include "drivers/HTSPB-driver.h"
 #include "drivers/PID.h"
-#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+//#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #define START_RED     "Red"
 #define START_BLUE    "Blue"
 #define START_FLOOR  "FLOOR"
@@ -53,9 +53,9 @@ void BumpConveyor();
 void Test();
 task main()
 {
-
+	Test();
 //	startTask(printf);
-	getUserInput();
+		//getUserInput();
 	initializeRobot();
 
 	if(startPosition == START_RAMP)
@@ -87,6 +87,8 @@ task main()
 		{
 			Turn(-90);
 			wait10Msec(80);
+			Drive(-2, 50);
+			wait10Msec(80);
 			RunLift(4);
 			wait10Msec(80);
 		  BumpConveyor();
@@ -105,7 +107,7 @@ task main()
 		{
 			Drive(-24,60);
 			wait10Msec(80);
-			Turn(-45);
+			Turn(45);
 			wait10Msec(80);
 			if(SensorValue(IR)==5)
 			{
@@ -131,25 +133,25 @@ task main()
 			else
 			{
 				wait10Msec(80);
-				Turn(-45);
+				Turn(45);
 				wait10Msec(80);
-				Drive(24,60);
+				Drive(-27,60);
 				wait10Msec(80);
-				Turn(-90);
+				Turn(85);
 				wait10Msec(80);
-				RunLift(4);
-				wait10Msec(80);
-		  	BumpCo4nveyor();
-		  	wait10Msec(80);
-		  	RunLift(0);
-		  	wait10Msec(80);
-		  	Turn(90);
-		  	wait10Msec(80);
-		  	Drive(12,60);
-		  	wait10Msec(80);
-		  	Turn(90);
-		  	wait10Msec(80);
-		  	Drive(20,100);
+				//RunLift(4);
+				//wait10Msec(80);
+		  //	BumpConveyor();
+		  //	wait10Msec(80);
+		  //	RunLift(0);
+		  //	wait10Msec(80);
+		  	//Turn(90);
+		  	//wait10Msec(80);
+		  	//Drive(12,60);
+		  	//wait10Msec(80);
+		  	//Turn(90);
+		  	//wait10Msec(80);
+		  	//Drive(20,100);
 			}
 		}
 	}
@@ -452,27 +454,58 @@ void Drive(int distance, int power)
 	int C=2*(PI)*2;
 	int Target= (1120/C)*distance;//en/in
 	nMotorEncoder[Right]=0;
+	int Lspeed=power;
+	int Rspeed=power;
+
+	float Bias= power*1.6;
 	if(distance>1)//forwards
 	{
 		while(nMotorEncoder[Right]<=Target)
 		{
-		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right], Target);
-		motor[Right]=power;
-		motor[Left]=power;
+			int leftenc=nMotorEncoder[Left];
+			int rightenc=nMotorEncoder[Right];
+			writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right], Target);
+			if(leftenc>rightenc)//veering right
+			{
+			//drive with left bias
+				Lspeed=Bias;
+				Rspeed=power;
+			}
+			if(leftenc<rightenc)
+			{
+				//drive with left bias
+				Rspeed=Bias;
+				Lspeed=power;
+			}
+
+			motor[Right]=Rspeed;
+			motor[Left]=Lspeed;
 		}
 		motor[Right]=0;
 		motor[Left]=0;
 	}
 	else if(distance<1)//backwards
 	{
-		while(nMotorEncoder[Right]>=Target)
+		while(nMotorEncoder[Right]<=Target)
 		{
-		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right]*-1, Target);
-		motor[Right]=-power;
-		motor[Left]=-power;
+			int leftenc=nMotorEncoder[Left];
+			int rightenc=nMotorEncoder[Right];
+			writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right], Target);
+			if(leftenc>rightenc)//veering right
+			{
+			//drive with left bias
+				Lspeed=Bias;
+				Rspeed=power;
+			}
+			if(leftenc<rightenc)
+			{
+				//drive with left bias
+				Rspeed=Bias;
+				Lspeed=power;
+			}
+			motor[Right]=Rspeed;
+			motor[Left]=Lspeed;
 		}
-		motor[Right]=0;
-		motor[Left]=0;
 	}
 }
 void Turn(int Angle)//clockwise is negitive
@@ -483,7 +516,7 @@ void Turn(int Angle)//clockwise is negitive
 	int enc_in=ppr/circumfrence;//result
   nMotorEncoder[motorE]=0;
   nMotorEncoder[motorD]=0;
-	float WheelbaseRadius = 7.0;
+	float WheelbaseRadius = 6.05;
 
 
 
@@ -534,8 +567,11 @@ motor[Conveyor]=0;
 
 void Test()
 {
-  //float nFeedBack=((23000/1120.0)/22.5)*100;
-  //writeDebugStreamLine("Status:%f",nFeedBack);
-
+		Drive(60, 60);
+	//clearDebugStream();
+	////while(true)
+	//{
+	//	writeDebugStreamLine("IR: %i",SensorValue(IR));
+	//}
 
 }
