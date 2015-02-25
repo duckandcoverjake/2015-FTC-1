@@ -53,10 +53,10 @@ void BumpConveyor();
 void Test();
 task main()
 {
-	Test();
+//	Test();
 //	startTask(printf);
-		//getUserInput();
-	initializeRobot();
+		getUserInput();
+		initializeRobot();
 
 	if(startPosition == START_RAMP)
 	{
@@ -88,12 +88,12 @@ task main()
 			Turn(-90);
 			wait10Msec(80);
 			Drive(-2, 50);
-			wait10Msec(80);
-			RunLift(4);
-			wait10Msec(80);
-		  BumpConveyor();
-		  wait10Msec(80);
-		  RunLift(0);
+			//wait10Msec(80);
+			//RunLift(4);
+			//wait10Msec(80);
+		 // BumpConveyor();
+		 // wait10Msec(80);
+		 // RunLift(0);
 		  wait10Msec(80);
 		  Turn(90);
 		  wait10Msec(80);
@@ -105,7 +105,7 @@ task main()
 		}
 		else
 		{
-			Drive(-24,60);
+			Drive(-27,60);
 			wait10Msec(80);
 			Turn(45);
 			wait10Msec(80);
@@ -115,12 +115,12 @@ task main()
 				wait10Msec(80);
 				Drive(-14,60);
 				wait10Msec(80);
-				RunLift(4);
-				wait10Msec(80);
-		  	BumpConveyor();
-		  	wait10Msec(80);
-		  	RunLift(0);
-		  	wait10Msec(80);
+				//RunLift(4);
+				//wait10Msec(80);
+		  //	BumpConveyor();
+		  //	wait10Msec(80);
+		  //	RunLift(0);
+		  //	wait10Msec(80);
 		  	Turn(-90);
 		  	wait10Msec(80);
 		  	Drive(12,60);
@@ -133,25 +133,31 @@ task main()
 			else
 			{
 				wait10Msec(80);
-				Turn(45);
+				Turn(35);
 				wait10Msec(80);
 				Drive(-27,60);
 				wait10Msec(80);
-				Turn(85);
+				Turn(78);
 				wait10Msec(80);
-				//RunLift(4);
-				//wait10Msec(80);
-		  //	BumpConveyor();
-		  //	wait10Msec(80);
-		  //	RunLift(0);
-		  //	wait10Msec(80);
-		  	//Turn(90);
-		  	//wait10Msec(80);
-		  	//Drive(12,60);
-		  	//wait10Msec(80);
-		  	//Turn(90);
-		  	//wait10Msec(80);
-		  	//Drive(20,100);
+				Drive(-3,50);
+				wait10Msec(80);
+				RunLift(4);
+				wait10Msec(80);
+				Drive(-4,50);
+				wait10Msec(80);
+		  	BumpConveyor();
+		  	wait10Msec(80);
+		  	Drive(4,50);
+		  	wait10Msec(80);
+		  	RunLift(0);
+		  	wait10Msec(80);
+		  	Turn(90);
+		  	wait10Msec(80);
+		  	Drive(12,60);
+		  	wait10Msec(80);
+		  	Turn(90);
+		  	wait10Msec(80);
+		  	Drive(20,100);
 			}
 		}
 	}
@@ -356,12 +362,12 @@ void locateInfaRedBeacon()
 	//}
 
 //if IR at GoalPosition 1 SET(int GoalPosition =1)and return;
-	if(SensorValue[IR]==5)
-	{
-	GoalPosition=1;
-	return;
-	}
-	RunLift(4);//is this like routine one?  -David
+	//if(SensorValue[IR]==5)
+	//{
+	//GoalPosition=1;
+	//return;
+	//}
+	//RunLift(4);//is this like routine one?  -David
 
 //if IR at GoalPosition 1 SET(int GoalPosition =1)and return;
 //else drive out of GoalPosition1 and into GoalPosition_2
@@ -454,58 +460,27 @@ void Drive(int distance, int power)
 	int C=2*(PI)*2;
 	int Target= (1120/C)*distance;//en/in
 	nMotorEncoder[Right]=0;
-	int Lspeed=power;
-	int Rspeed=power;
-
-	float Bias= power*1.6;
 	if(distance>1)//forwards
 	{
 		while(nMotorEncoder[Right]<=Target)
 		{
-			int leftenc=nMotorEncoder[Left];
-			int rightenc=nMotorEncoder[Right];
-			writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right], Target);
-			if(leftenc>rightenc)//veering right
-			{
-			//drive with left bias
-				Lspeed=Bias;
-				Rspeed=power;
-			}
-			if(leftenc<rightenc)
-			{
-				//drive with left bias
-				Rspeed=Bias;
-				Lspeed=power;
-			}
-
-			motor[Right]=Rspeed;
-			motor[Left]=Lspeed;
+		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right], Target);
+		motor[Right]=power;
+		motor[Left]=power;
 		}
 		motor[Right]=0;
 		motor[Left]=0;
 	}
 	else if(distance<1)//backwards
 	{
-		while(nMotorEncoder[Right]<=Target)
+		while(nMotorEncoder[Right]>=Target)
 		{
-			int leftenc=nMotorEncoder[Left];
-			int rightenc=nMotorEncoder[Right];
-			writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right], Target);
-			if(leftenc>rightenc)//veering right
-			{
-			//drive with left bias
-				Lspeed=Bias;
-				Rspeed=power;
-			}
-			if(leftenc<rightenc)
-			{
-				//drive with left bias
-				Rspeed=Bias;
-				Lspeed=power;
-			}
-			motor[Right]=Rspeed;
-			motor[Left]=Lspeed;
+		writeDebugStreamLine("Value :%i, Target: %i",nMotorEncoder[Right]*-1, Target);
+		motor[Right]=-power;
+		motor[Left]=-power;
 		}
+		motor[Right]=0;
+		motor[Left]=0;
 	}
 }
 void Turn(int Angle)//clockwise is negitive
@@ -557,7 +532,7 @@ void Turn(int Angle)//clockwise is negitive
 void BumpConveyor()
 {
 motor[Conveyor]=20;
-wait10Msec(100);
+wait10Msec(200);
 motor[Conveyor]=0;
 wait10Msec(50);
 motor[Conveyor]=30;
