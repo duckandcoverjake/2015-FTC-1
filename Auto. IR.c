@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  HTMotor,  HTMotor)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S2,     IR,         sensorHiTechnicIRSeeker1200)
+#pragma config(Sensor, S2,     IR,             sensorHiTechnicIRSeeker1200)
 #pragma config(Sensor, S3,     Compass,        sensorI2CHiTechnicCompass)
 #pragma config(Sensor, S4,     HTSPB,          sensorI2CCustom9V)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
@@ -9,7 +9,7 @@
 #pragma config(Motor,  mtr_S1_C1_1,     Right,         tmotorTetrix, openLoop, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     Left,          tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C3_1,     Intake,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_2,     none,          tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C3_2,     hood,          tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_1,     Conveyor,      tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C4_2,     Lift,          tmotorTetrix, PIDControl, encoder)
 #pragma config(Servo,  srvo_S1_C2_1,    Gripper,              tServoStandard)
@@ -50,12 +50,13 @@ void RunLift(float nStage);
 void Drive(int distance, int power);
 void Turn(int Angle);// +360 to -360
 void BumpConveyor();
+void OpenHood();
 void Test();
 task main()
 {
-//	Test();
+	Test();
 //	startTask(printf);
-		getUserInput();
+//		getUserInput();
 		initializeRobot();
 
 	if(startPosition == START_RAMP)
@@ -80,6 +81,8 @@ task main()
 	if(startPosition==START_FLOOR)
 	{
 		Drive(33, 60);
+		wait10Msec(80);
+
 		wait10Msec(80);
 		Turn(90);
 		wait10Msec(80);
@@ -106,6 +109,8 @@ task main()
 		else
 		{
 			Drive(-27,60);
+			wait10Msec(80);
+			OpenHood();
 			wait10Msec(80);
 			Turn(45);
 			wait10Msec(80);
@@ -271,6 +276,13 @@ task main()
 //clearDebugStream();
 }
 
+void OpenHood()
+{
+ motor[hood]=30;
+ wait10Msec(100);
+ motor[hood]=0;
+}
+
 task printf()
 {
 	while(true)
@@ -283,13 +295,14 @@ task printf()
 	clearDebugStream();
 	}
 }
+
 void initializeRobot()
 {
 	servo[Gripper]=80;
 }
 void getUserInput()
 {
- disableDiagnosticsDisplay();
+ 	disableDiagnosticsDisplay();
   nxtDisplayCenteredTextLine(1, "FLOOR or RAMP?");
   nxtDisplayCenteredTextLine(7, "FLOOR RAMP");
   while(true)
@@ -540,13 +553,8 @@ wait10Msec(0.75);
 motor[Conveyor]=0;
 }
 
+
 void Test()
 {
-		Drive(60, 60);
-	//clearDebugStream();
-	////while(true)
-	//{
-	//	writeDebugStreamLine("IR: %i",SensorValue(IR));
-	//}
-
+	OpenHood();
 }

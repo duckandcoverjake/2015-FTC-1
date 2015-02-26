@@ -1,4 +1,5 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  HTMotor,  HTMotor)
+#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     IRLeft,         sensorHiTechnicIRSeeker1200)
 #pragma config(Sensor, S3,     Compass,        sensorI2CHiTechnicCompass)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
@@ -7,7 +8,7 @@
 #pragma config(Motor,  mtr_S1_C1_1,     Right,         tmotorTetrix, openLoop, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     Left,          tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C3_1,     Intake,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_2,     none,          tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C3_2,     Hood,          tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C4_1,     Conveyor,      tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_2,     Lift,          tmotorTetrix, PIDControl, encoder)
 #pragma config(Servo,  srvo_S1_C2_1,    Gripper,              tServoStandard)
@@ -73,6 +74,7 @@ task main()
 	int threshold = 14;
   while (true)
   {
+  //driver 1
   	//drivetrain
 		if(abs(joystick.joy1_y1)>threshold)
 		{
@@ -91,36 +93,6 @@ task main()
 		else
 		{
 		motor[Right]=0;
-		}
-		//intake- right trigger set
-		if(joy2Btn(7))
-		{
-		writeDebugStreamLine("joy2Btn(6): %i", joy2Btn(6));
-		motor[Intake]=80;
-		}
-		else if(joy2Btn(5))
-		{
-		writeDebugStreamLine("joy2Btn(8): %i", joy2Btn(8));
-		motor[Intake]=-80;
-		}
-		else
-		{
-		motor[Intake]=0;
-		}
-		//Conveyorulator - left trigger set
-		if(joy2Btn(6))
-		{
-		writeDebugStreamLine("joy2Btn(5): %i", joy2Btn(5));
-		motor[Conveyor]=80;
-		}
-		else if(joy2Btn(8))
-		{
-		writeDebugStreamLine("joy2Btn(7): %i", joy2Btn(7));
-		motor[Conveyor]=-80;
-		}
-		else
-		{
-		motor[Conveyor]=0;
 		}
 		//Gripper-NC hold to open
 		if(joy1Btn(8))
@@ -145,6 +117,37 @@ task main()
 		{
 		servo[lock]=127;
 		}
+// driver 2
+		//intake- right trigger set
+		if(joy2Btn(7))
+		{
+		writeDebugStreamLine("joy2Btn(6): %i", joy2Btn(6));
+		motor[Intake]=80;
+		}
+		else if(joy2Btn(5))
+		{
+		writeDebugStreamLine("joy2Btn(8): %i", joy2Btn(8));
+		motor[Intake]=-80;
+		}
+		else
+		{
+		motor[Intake]=0;
+		}
+		//Conveyor - left trigger set
+		if(joy2Btn(6))
+		{
+		writeDebugStreamLine("joy2Btn(5): %i", joy2Btn(5));
+		motor[Conveyor]=80;
+		}
+		else if(joy2Btn(8))
+		{
+		writeDebugStreamLine("joy2Btn(7): %i", joy2Btn(7));
+		motor[Conveyor]=-80;
+		}
+		else
+		{
+		motor[Conveyor]=0;
+		}
 		//lift--3 up 2 down
 		if(joy2Btn(3))
 		{
@@ -158,7 +161,23 @@ task main()
 		}
 		else
 		{
-		motor[Lift]=0;
+			motor[Lift]=0;
+		}
+		//hood-- 1 down 4 up
+		if(joy2Btn(1))
+		{
+			writeDebugStreamLine("joy2Btn(1): %i", joy2Btn(1));
+			motor[Hood]=30;
+		}
+		else if(joy2Btn(4))
+		{
+			writeDebugStreamLine("joy2Btn(4): %i", joy2Btn(4));
+			motor[Hood]=-30;
+		}
+		else
+		{
+
+			motor[Hood]=0;
 		}
 		clearDebugStream();
 	}
