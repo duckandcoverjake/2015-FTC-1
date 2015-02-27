@@ -110,7 +110,7 @@ task main()
 		{
 			Drive(-27,80);
 			wait10Msec(80);
-			OpenHood();
+		//	OpenHood();
 			wait10Msec(80);
 			Turn(45);
 			wait10Msec(80);
@@ -140,11 +140,11 @@ task main()
 				wait10Msec(80);
 				Turn(35);
 				wait10Msec(80);
-				Drive(-27,80);
+				Drive(-21,80);
 				wait10Msec(80);
-				Turn(90);
+				Turn(85);
 				wait10Msec(80);
-				Drive(-3,80);
+				Drive(-2,80);
 				wait10Msec(80);
 				RunLift(4);
 				wait10Msec(80);
@@ -152,7 +152,7 @@ task main()
 				wait10Msec(80);
 		  	BumpConveyor();
 		  	wait10Msec(80);
-		  	Drive(4,80);
+		  	Drive(-4,80);
 		  	wait10Msec(80);
 		  	RunLift(0);
 		  	wait10Msec(80);
@@ -279,7 +279,7 @@ task main()
 void OpenHood()
 {
  motor[hood]=30;
- wait10Msec(100);
+ wait10Msec(160);
  motor[hood]=0;
 }
 
