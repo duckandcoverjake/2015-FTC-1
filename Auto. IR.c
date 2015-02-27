@@ -25,7 +25,7 @@
 
 #include "drivers/HTSPB-driver.h"
 #include "drivers/PID.h"
-//#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #define START_RED     "Red"
 #define START_BLUE    "Blue"
 #define START_FLOOR  "FLOOR"
@@ -54,11 +54,11 @@ void OpenHood();
 void Test();
 task main()
 {
-	Test();
-//	startTask(printf);
-//		getUserInput();
+//	Test();
+		startTask(printf);
+		getUserInput();
 		initializeRobot();
-
+		waitforstart()
 	if(startPosition == START_RAMP)
 	{
   Drive(-105, 40);
@@ -80,9 +80,9 @@ task main()
 	}
 	if(startPosition==START_FLOOR)
 	{
-		Drive(33, 60);
+		Drive(33, 80);
 		wait10Msec(80);
-
+		OpenHood();
 		wait10Msec(80);
 		Turn(90);
 		wait10Msec(80);
@@ -90,17 +90,17 @@ task main()
 		{
 			Turn(-90);
 			wait10Msec(80);
-			Drive(-2, 50);
-			//wait10Msec(80);
-			//RunLift(4);
-			//wait10Msec(80);
-		 // BumpConveyor();
-		 // wait10Msec(80);
-		 // RunLift(0);
+			Drive(-2, 80);
+			wait10Msec(80);
+			RunLift(4);
+			wait10Msec(80);
+		  BumpConveyor();
+		  wait10Msec(80);
+		  RunLift(0);
 		  wait10Msec(80);
 		  Turn(90);
 		  wait10Msec(80);
-		  Drive(12,60);
+		  Drive(12,80);
 		  wait10Msec(80);
 		  Turn(90);
 		  wait10Msec(80);
@@ -108,7 +108,7 @@ task main()
 		}
 		else
 		{
-			Drive(-27,60);
+			Drive(-27,80);
 			wait10Msec(80);
 			OpenHood();
 			wait10Msec(80);
@@ -120,15 +120,15 @@ task main()
 				wait10Msec(80);
 				Drive(-14,60);
 				wait10Msec(80);
-				//RunLift(4);
-				//wait10Msec(80);
-		  //	BumpConveyor();
-		  //	wait10Msec(80);
-		  //	RunLift(0);
-		  //	wait10Msec(80);
+				RunLift(4);
+				wait10Msec(80);
+		  	BumpConveyor();
+		  	wait10Msec(80);
+		  	RunLift(0);
+		  	wait10Msec(80);
 		  	Turn(-90);
 		  	wait10Msec(80);
-		  	Drive(12,60);
+		  	Drive(12,80);
 		  	wait10Msec(80);
 		  	Turn(-90);
 		  	wait10Msec(80);
@@ -140,25 +140,25 @@ task main()
 				wait10Msec(80);
 				Turn(35);
 				wait10Msec(80);
-				Drive(-27,60);
+				Drive(-27,80);
 				wait10Msec(80);
-				Turn(78);
+				Turn(90);
 				wait10Msec(80);
-				Drive(-3,50);
+				Drive(-3,80);
 				wait10Msec(80);
 				RunLift(4);
 				wait10Msec(80);
-				Drive(-4,50);
+				Drive(-4,80);
 				wait10Msec(80);
 		  	BumpConveyor();
 		  	wait10Msec(80);
-		  	Drive(4,50);
+		  	Drive(4,80);
 		  	wait10Msec(80);
 		  	RunLift(0);
 		  	wait10Msec(80);
 		  	Turn(90);
 		  	wait10Msec(80);
-		  	Drive(12,60);
+		  	Drive(12,80);
 		  	wait10Msec(80);
 		  	Turn(90);
 		  	wait10Msec(80);
