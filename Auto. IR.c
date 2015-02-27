@@ -61,7 +61,7 @@ task main()
 		waitforstart()
 	if(startPosition == START_RAMP)
 	{
-  Drive(-105, 40);
+  Drive(-65, 30);
 	wait10Msec(150);
 	servo[Gripper]=0;
 	wait10Msec(100);
@@ -74,7 +74,7 @@ task main()
 	Drive(101, 85);
 	wait10Msec(50);
 	Turn(-90);
-	Runlift(1);
+	Runlift(2);
 	wait10Msec(50);
 	BumpConveyor();
 	}

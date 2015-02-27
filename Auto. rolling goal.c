@@ -9,7 +9,7 @@
 #pragma config(Motor,  mtr_S1_C1_1,     Right,         tmotorTetrix, openLoop, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     Left,          tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C3_1,     Intake,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_2,     none,          tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C3_2,     hood,          tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C4_1,     Conveyor,      tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C4_2,     Lift,          tmotorTetrix, PIDControl, encoder)
 #pragma config(Servo,  srvo_S1_C2_1,    Gripper,              tServoStandard)
@@ -50,6 +50,7 @@ void RunLift(float nStage);
 void Drive(int distance, int power);
 void Turn(int Angle);// +360 to -360
 void BumpConveyor();
+void OpenHood();
 void Test();
 task main()
 {
@@ -60,7 +61,11 @@ task main()
 
 	if(startPosition == START_RAMP)
 	{
-  Drive(-105, 40);
+  Drive(-64, 40);
+  wait10Msec(80);++
+ 	Turn(-15);
+ 	wait10Msec(80);
+ 	Drive(-28, 60);
 	wait10Msec(150);
 	servo[Gripper]=0;
 	wait10Msec(100);
@@ -68,12 +73,14 @@ task main()
 	wait10Msec(200);
 	servo[lock]=127;
 	wait10Msec(200);
-	Turn(32);
+	OpenHood();
+	wait10Msec(80);
+	Turn(30);
 	wait10Msec(50);
-	Drive(101, 85);
+	Drive(104, 85);
 	wait10Msec(50);
-	Turn(-90);
-	Runlift(1);
+	Turn(-100);
+	Runlift(2);
 	wait10Msec(50);
 	BumpConveyor();
 	}
@@ -81,11 +88,11 @@ task main()
 	{
 		Drive(-36, 50);
 		wait10Msec(80);
-		Turn(90);
+		Turn(80);
 		wait10Msec(80);
 		Drive(-13, 50);
 		wait10Msec(80);
-		Turn(-86);
+		Turn(-900);
 		wait10Msec(80);
 		Drive(-68, 50);
 		wait10Msec(150);
@@ -482,6 +489,14 @@ motor[Conveyor]=30;
 wait10Msec(0.75);
 motor[Conveyor]=0;
 }
+
+void OpenHood()
+{
+ motor[hood]=30;
+ wait10Msec(160);
+ motor[hood]=0;
+}
+
 
 void Test()
 {

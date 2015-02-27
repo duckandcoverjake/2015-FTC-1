@@ -137,12 +137,12 @@ task main()
 		if(joy2Btn(6))
 		{
 		writeDebugStreamLine("joy2Btn(5): %i", joy2Btn(5));
-		motor[Conveyor]=80;
+		motor[Conveyor]=30;
 		}
 		else if(joy2Btn(8))
 		{
 		writeDebugStreamLine("joy2Btn(7): %i", joy2Btn(7));
-		motor[Conveyor]=-80;
+		motor[Conveyor]=-30;
 		}
 		else
 		{
